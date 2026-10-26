@@ -285,6 +285,16 @@ try {
     assert.equal(filterEngineJSON('/api/settings', unknown), unknown, 'other routes pass through')
     assert.throws(() => assertEngineMutation('POST', '/api/plugins/add', { spec: PACKAGE }), /not offered/)
     assert.doesNotThrow(() => assertEngineMutation('GET', '/api/plugins/add', { spec: PACKAGE }))
+    // The restoration this fork exists for: Huawei Cloud MaaS passes the filter,
+    // and so does a model CodeArts serves. WorkBuddy is still refused.
+    const huawei = filterEngineJSON('/api/providers', { presets: [
+      { id: 'huaweicloud', name: 'Huawei Cloud MaaS' },
+      { id: 'workbuddy', name: 'WorkBuddy' },
+    ] })
+    assert.deepEqual(huawei.presets.map(preset => preset.id), ['huaweicloud'], 'Huawei preset survives')
+    assert.equal(deniedModel({ id: 'glm-5.3', owned_by: 'huaweicloud' }), false, 'Huawei model survives')
+    assert.equal(deniedModel({ id: 'glm-5.3', owned_by: 'codearts' }), false, 'CodeArts model survives')
+    assert.doesNotThrow(() => assertEngineMutation('POST', '/api/provider/save', { preset: 'huaweicloud', key: 'fixture' }))
   })
 
   console.log(`magpie-policy: ${checks} checks passed`)
