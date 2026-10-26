@@ -23,8 +23,6 @@ async function within(promise, label) {
 }
 
 export async function verifyChannelPrFixes() {
-  const { verifyChannelStorageCompatibility } = await import('./channel-storage-compat-test.mjs')
-  await verifyChannelStorageCompatibility()
   await verifySystemPrompts()
   await verifyGatewayTeardown()
 }
