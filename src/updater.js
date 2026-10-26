@@ -29,7 +29,9 @@ import fs from 'node:fs'
 import path from 'node:path'
 import crypto from 'node:crypto'
 
-const REPO = 'Ebony-Vinyl/dsh-our-free-model'
+// This fork's own releases and announcements, not upstream's: upstream's
+// Ed25519 signature no longer verifies against the fork's pinned key.
+const REPO = 'Hana-ame/dsh-our-free-model'
 
 /**
  * A GitHub raw proxy. On networks where `raw.githubusercontent.com` and

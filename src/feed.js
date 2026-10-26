@@ -21,7 +21,9 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-const REPO = 'Ebony-Vinyl/dsh-our-free-model'
+// This fork's own releases and announcements, not upstream's: upstream's
+// Ed25519 signature no longer verifies against the fork's pinned key.
+const REPO = 'Hana-ame/dsh-our-free-model'
 
 /**
  * Feed locations, in preference order.

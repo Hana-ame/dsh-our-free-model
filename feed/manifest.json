@@ -1,7 +1,7 @@
 {
   "version": "2.7.3-huawei.1",
   "base": "../",
-  "publishedAt": "2026-10-26T20:31:41.261Z",
+  "publishedAt": "2026-10-26T21:45:49.994Z",
   "notes": "",
   "files": [
     {
@@ -196,8 +196,8 @@
     },
     {
       "path": "src/feed.js",
-      "size": 13366,
-      "sha256": "06cbe31d895d7f9dd6b39f9a4992b9d495ad50acd3fb772fec0799694d3c9519"
+      "size": 13508,
+      "sha256": "6e5d7124172b8a9e86532591cee87def9063c9ff28895a3a3cf434e44684805e"
     },
     {
       "path": "src/forward.js",
@@ -341,8 +341,8 @@
     },
     {
       "path": "src/updater.js",
-      "size": 53932,
-      "sha256": "b0977aad21cfc8c8bd9974e95b7536e74a3f50ebe931b6ebcdaa157793ed625e"
+      "size": 54074,
+      "sha256": "49316207b2e76d209045e91d241b15ff7bd4740b89db43baa54fdb7b14e6af46"
     },
     {
       "path": "src/upstream.js",
@@ -400,5 +400,5 @@
       "sha256": "b2cbbd38d5461521f40d8fbd947bfa9be641481602eaec0f1fc5d29cca8d7e5f"
     }
   ],
-  "signature": "LkiotvwQ7HaaOGHJzNKzQ3mxSfGAAxfnrC5+FUu60ZcrCaKy+QYIotVlHVZaYY95DdqxoTY18WVr3VXVr6ZcBA=="
+  "signature": "HJ1No8X+Ypestbp48PNASEPxGinzThwDg8YM93Z3aaKgL0tvaZrUyUp9d5ikji/yY5F2pXJhiSCaur7PbiLgBA=="
 }
