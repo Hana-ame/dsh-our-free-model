@@ -60,7 +60,7 @@ export const PROVIDERS = deepFreeze(JSON.parse(fs.readFileSync(REGISTRY_FILE, 'u
 
 /**
  * The channels this build actually offers: the registry minus the excluded
- * account channels (WorkBuddy, Huawei Cloud). Excluding here rather than in
+ * account channel (WorkBuddy only; this fork restores Huawei Cloud). Excluding here rather than in
  * `registry.json` keeps one decision point — `src/magpie-policy.js` — so the
  * embedded engine and this directory cannot disagree, and a later registry
  * refresh cannot quietly reintroduce a channel the product does not carry.

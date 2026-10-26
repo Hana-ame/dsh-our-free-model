@@ -125,20 +125,21 @@ try {
     assert.equal(providers.presets.length > 5, true, 'presets stay')
   })
 
-  await engineCheck('the Huawei Cloud channel is absent from the provider presets', async () => {
+  await engineCheck('the restored Huawei Cloud preset is offered again', async () => {
     const providers = await read('api/providers')
-    assert(!providers.presets.some(preset => preset.id === 'huaweicloud'), 'no Huawei Cloud preset')
-    assert(!JSON.stringify(providers.presets).toLowerCase().includes('huawei'), 'no Huawei Cloud name')
+    assert(providers.presets.some(preset => preset.id === 'huaweicloud'), 'Huawei Cloud preset is offered')
     assert(providers.presets.some(preset => preset.id === 'tencent-cloud'), 'other regional presets stay')
     const upstream = await read('api/upstream')
-    assert(!Object.hasOwn(upstream.providers ?? {}, 'huaweicloud'), 'vendor status leaves the id out')
+    assert(Object.hasOwn(upstream.providers ?? {}, 'huaweicloud'), 'vendor status includes the id')
+    assert(!(await denied('POST', '/api/provider/save', { preset: 'huaweicloud', key: 'fixture' })),
+      'the restored preset is not refused')
   })
 
   await engineCheck('all three excluded channels are absent, under every name they are sold as', async () => {
     // The China build is listed as "CodeBuddy" as often as "WorkBuddy", and the
     // international one as "workbuddy-ai"; a package, preset or provider row
     // could use any of them. None may reach a surface a user can act on.
-    const spellings = /workbuddy|codebuddy|huaweicloud|huawei[\s-]*cloud|modelarts|codearts|华为云|码道/i
+    const spellings = /workbuddy|codebuddy/i
     const actionable = ['api/plugins', 'api/plugins/listings', 'api/plugins/market',
       'api/plugins/updates', 'api/plugin-pages', 'api/plugin-panels', 'api/importapps', 'api/upstream',
       'api/login/usage', 'api/usage/quotas']
@@ -164,30 +165,30 @@ try {
       ['/api/provider/save', { preset: 'codebuddy', key: 'fixture' }],
       ['/api/provider/save', { id: 'codebuddy', name: 'CodeBuddy', key: 'fixture' }],
       ['/api/provider/save', { preset: 'workbuddy-ai', key: 'fixture' }],
-      ['/api/provider/save', { preset: 'codearts', key: 'fixture' }],
       ['/api/plugins/add', { spec: '@magpie-community/opencode-codebuddy-auth' }],
-      ['/api/plugins/add', { spec: '@magpie-community/opencode-codearts-auth' }],
       ['/api/signin', { agent: 'codebuddy' }],
-      ['/api/signin', { agent: 'codearts' }],
     ]) assert(await denied('POST', route, body), `${route} ${JSON.stringify(body)}`)
   })
 
-  await check('the disclaimer names all three channels and states the responsibility boundary', async () => {
+  await check('the disclaimer names WorkBuddy and explains the Huawei restoration', async () => {
     const { DISCLAIMER, EXCLUDED_CHANNELS } = await import('../src/disclaimer.js')
     const named = EXCLUDED_CHANNELS.join(' ').toLowerCase()
-    for (const channel of ['workbuddy', 'workbuddy-ai', 'codebuddy', 'huaweicloud']) {
+    for (const channel of ['workbuddy', 'workbuddy-ai', 'codebuddy']) {
       assert.match(named, new RegExp(channel), `the disclaimer names ${channel}`)
     }
+    assert.doesNotMatch(named, /huaweicloud|huawei/, 'Huawei is no longer listed as excluded')
     const body = DISCLAIMER.sections.map(section => section.body).join(' ')
-    assert.match(body, /不包含、也不提供/, 'it says the build does not provide them')
+    assert.match(body, /恢复了华为云/, 'it says this fork restores Huawei Cloud')
+    assert.match(body, /CodeArts/, 'it names the restored CodeArts channel')
     assert.match(body, /与本项目作者及团队无关/, 'it states the team is not responsible')
     assert.match(body, /个人学习/, 'it states the project purpose')
     assert.match(body, /自行承担/, 'it places the consequences on the user')
   })
 
-  await engineCheck('saving a provider from the excluded preset is refused', async () => {
-    assert(await denied('POST', '/api/provider/save', { preset: 'huaweicloud', key: 'fixture' }), 'preset save')
-    assert(await denied('POST', '/api/provider/save', { id: 'huaweicloud', name: 'Huawei Cloud', key: 'fixture' }), 'named save')
+  await engineCheck('saving a provider from the restored Huawei preset is not refused', async () => {
+    const huawei = await post('api/provider/save', { preset: 'huaweicloud', key: 'fixture', name: 'OFM Huawei fixture' })
+    assert.notEqual(huawei.status, 403, 'the restored preset save is not refused by policy')
+    await huawei.text()
     const other = await post('api/provider/save', { preset: 'moonshot-cn', key: 'fixture', name: 'OFM policy fixture' })
     assert.notEqual(other.status, 403, 'an unrelated preset save is not refused by policy')
     await other.text()

@@ -9,9 +9,9 @@
  * fetched at run time, so the exclusion is enforced here, at the management
  * boundary this application owns, rather than in the engine.
  *
- * Huawei Cloud MaaS ("huaweicloud", its Token Plan preset) is likewise not
- * offered: this build carries no Huawei channel, and the engine's pinned preset
- * list is the one surface that would otherwise reintroduce it.
+ * This fork restores Huawei Cloud: the CodeArts account channel and the
+ * Huawei Cloud MaaS ("huaweicloud") Token Plan preset are offered again, so
+ * neither is denied here. Only WorkBuddy remains excluded.
  *
  * A channel is denied by its subscription id, by the preset that names it, by
  * the package that serves it, and by any name carrying one of the aliases below
@@ -20,12 +20,13 @@
  * "WorkBuddy".
  */
 
-const DENIED_IDS = new Set(['workbuddy', 'workbuddy-ai', 'huaweicloud', 'codebuddy', 'codebuddy-cn', 'codearts'])
+const DENIED_IDS = new Set(['workbuddy', 'workbuddy-ai', 'codebuddy', 'codebuddy-cn'])
 // Aliases, not a product name filter: every spelling a package, preset, agent
-// or provider row could carry for one of these channels. "CodeArts" is Huawei
-// Cloud's own coding plan, served by a community plugin rather than a preset.
-const DENIED_TEXT = /workbuddy|codebuddy|huaweicloud|huawei[\s-]*cloud|modelarts|codearts|华为云|码道/i
-export const POLICY_REFUSED = 'WorkBuddy and Huawei Cloud are not offered by this build'
+// or provider row could carry for WorkBuddy. Huawei spellings are deliberately
+// absent: this fork restores the CodeArts channel and the Huawei Cloud MaaS
+// preset, so those rows must pass through.
+const DENIED_TEXT = /workbuddy|codebuddy/i
+export const POLICY_REFUSED = 'WorkBuddy is not offered by this build'
 
 /**
  * Whether an account channel is excluded from this build. Both the embedded

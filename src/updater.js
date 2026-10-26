@@ -74,7 +74,11 @@ export const DEFAULT_MANIFEST_SOURCES = [
  * itself — whoever forges the manifest forges the hashes. This key is the step
  * the forger cannot take.
  */
-export const PINNED_MANIFEST_PUBLIC_KEY = 'MCowBQYDK2VwAyEAeLdSVwYFyazc2PIBC0oLsvo4LghGEQz9iXIl3CqRuXI='
+// This fork signs its own releases. Upstream's key cannot sign a fork, so the
+// pin names the fork's Ed25519 public key (private half stays out of the repo,
+// at ~/.config/ofm-fork/manifest-key.pem by convention). Documents signed by
+// upstream's key will not verify here, and vice versa — expected.
+export const PINNED_MANIFEST_PUBLIC_KEY = 'MCowBQYDK2VwAyEA8n7Rcuaojr2NKe0BrOoji5LQfBhYQb9GWcfcWoHJWow='
 
 /** The manifest fields a signature covers, in canonical (sorted-key) JSON. */
 const SIGNED_FIELDS = ['version', 'base', 'publishedAt', 'notes', 'files', 'minSupported']
