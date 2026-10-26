@@ -13,7 +13,7 @@
   "license": "MIT",
   "source": {
     "repository": "https://github.com/Hana-ame/dsh-our-free-model",
-    "revision": "f69d03eb84884504acf5f8d1ee08526b5ede0b0b"
+    "revision": "b93813023ddf316832b128111ec6483880170ba4"
   },
   "x-ecosystem-packaging": {
     "adapterIsolation": "adapter/kernel.js is the only module that may import @deepseek-ai/*; enforced by scripts/catalog-test.mjs",
